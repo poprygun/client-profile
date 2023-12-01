@@ -1,0 +1,14 @@
+id,model_id,name,description,pillar,strategic_objective
+1000,1000,Validate the data quality of source systems,Implement data validation mechanisms,OPERATIONAL_EXCELLENCE,ANTICIPATE_FAILURE
+1001,1000,Validate the data quality of source systems,Notify stakeholders and use business logic to determine how to remediate data that is not valid,OPERATIONAL_EXCELLENCE,ANTICIPATE_FAILURE
+1002,1000,Classify and protect data,Identify classification levels,SECURITY,PROTECT_DATA_IN_TRANSIT_AND_AT_REST
+1003,1000,Classify and protect data,Define access rules,SECURITY,PROTECT_DATA_IN_TRANSIT_AND_AT_REST
+1004,1000,Classify and protect data,Identify sensitive information and define protection policies,SECURITY,KEEP_PEOPLE_AWAY_FROM_DATA
+1005,1000,Understand the business requirements,Understand the SLA,SECURITY,PREPARE_FOR_SECURITY_EVENTS
+1006,1000,Understand the business requirements,Identify system dependencies and the upstream and downstream workloads,SECURITY,PREPARE_FOR_SECURITY_EVENTS
+1007,1000,Understand the business requirements,Understand the impact to downstream workloads,SECURITY,PREPARE_FOR_SECURITY_EVENTS
+1008,1000,Choose the best-performing compute solution,Let business stakeholders confirm the business performance criteria,PERFORMANCE_EFFICIENCY,DEMOCRATIZE_ADVANCED_TECHNOLOGIES
+1009,1000,Choose the best-performing compute solution,Define and measure the computing performance metrics,PERFORMANCE_EFFICIENCY,DEMOCRATIZE_ADVANCED_TECHNOLOGIES
+1010,1000,Choose the best-performing compute solution,Periodically identify under-performing components and fine-tune the infrastructure or application logic,PERFORMANCE_EFFICIENCY,EXPERIMENT_MORE_OFTEN
+1011,1000,Choose cost-effective compute and storage solutions based on workload usage patterns,Plan and provision capacity for predictable workload usage,COST_OPTIMIZATION,ADOPT_A_CONSUMPTION_MODEL
+1012,1000,Choose cost-effective compute and storage solutions based on workload usage patterns,Avoid data duplication,COST_OPTIMIZATION,MEASURE_OVERALL_EFFICIENCY

@@ -1,0 +1,468 @@
+# API-first development with OpenAPI
+# This file will be used at compile time to generate Spring-MVC endpoint stubs using openapi-generator
+openapi: '3.0.3'
+info:
+  title: 'client'
+  version: 0.0.1
+servers:
+  - url: http://localhost:8081/api
+    description: Development server
+  - url: https://localhost:8081/api
+    description: Development server with TLS Profile
+tags:
+  - name: profile
+    description: Profiles
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /models:
+    get:
+      tags:
+        - model
+      summary: Find all models
+      description: Returns all models
+      operationId: getModels
+      responses:
+        200:
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModelDTO'
+
+  /models/{modelId}:
+    get:
+      tags:
+        - model
+      summary: Get a model
+      description: Get Model
+      operationId: getModelById
+      parameters:
+        - name: modelId
+          in: path
+          description: ID of model to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelDTO'
+        404:
+          description: Client not found
+
+  /models/{modelId}/download:
+    get:
+      tags:
+        - model
+      summary: Get a model
+      description: Get Model
+      operationId: getModelData
+      parameters:
+        - name: modelId
+          in: path
+          description: ID of model to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            text/csv:
+              schema:
+                type: string
+              examples:
+                csv table:
+                  summary: A CSV table with 2 cells
+                  value: 'cell1, cell2'
+        404:
+          description: Client not found
+
+
+  /clients:
+    post:
+      tags:
+        - client
+      summary: Add a new client
+      description: Add a new client
+      operationId: addClient
+      requestBody:
+        description: Create a new client
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientDTO'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDTO'
+    get:
+      tags:
+        - client
+      summary: Find all clients
+      description: Returns all clients
+      operationId: getClients
+      responses:
+        200:
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientDTO'
+  /clients/{clientId}:
+    get:
+      tags:
+        - client
+      summary: Get a client
+      description: Get Client
+      operationId: getClientById
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDTO'
+        '404':
+          description: Client not found
+
+  /clients/{clientId}/profiles:
+    post:
+      tags:
+        - profile
+      summary: Add a new profile
+      description: Add a new profile to the store
+      operationId: addProfile
+      parameters:
+        - name: clientId
+          in: path
+          description: Client Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Create a new profile
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileDTO'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileDTO'
+    get:
+      tags:
+        - profile
+      summary: Find all profiles of the client
+      description: Returns all profiles of the client
+      operationId: getProfiles
+      parameters:
+        - name: clientId
+          in: path
+          description: Client Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfileDTO'
+  /profiles/{profileId}/strategic-objective/upload:
+    post:
+      tags:
+        - profile
+      summary: Upload multiple Strategic Objectives
+      description: Upload multiple Strategic Objectives
+      operationId: addStrategicObjectives
+      parameters:
+        - name: profileId
+          in: path
+          description: Profile Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          'application/octet-stream':
+            schema:
+              type: string
+              format: binary
+      responses:
+        '201':
+          description: Successful operation
+  /profiles/{profileId}/summary:
+    get:
+      tags:
+        - profile
+      summary: Calculated Values of Profile Pillars
+      description: Calculated Values of Profile Pillars
+      operationId: getSummary
+      parameters:
+        - name: profileId
+          in: path
+          description: Profile Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfileSummaryDTO'
+
+  /profiles/{profileId}/strategic-objective:
+    post:
+      tags:
+        - profile
+      summary: Add a new Strategic Objective Score
+      description: Add a new Strategic Objective Score
+      operationId: addStrategicObjective
+      parameters:
+        - name: profileId
+          in: path
+          description: Profile Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Create a new Strategic Objective Score
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StrategicObjectiveScoreDTO'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+
+    get:
+      tags:
+        - profile
+      summary: Find all Strategic Objective Score of the client profile
+      description: Returns all Strategic Objective Score of the client profile
+      operationId: getProfileStrategicObjectives
+      parameters:
+        - name: profileId
+          in: path
+          description: Profile Id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StrategicObjectiveScoreDTO'
+components:
+  schemas:
+    ModelDTO:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Object id
+        name:
+          type: string
+          description: Model Name
+        description:
+          type: string
+          description: Model Name
+        bestPractices:
+          type: array
+          items:
+            $ref: '#/components/schemas/BestPracticeDTO'
+
+    BestPracticeDTO:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Object id
+        pillar:
+          $ref: '#/components/schemas/PillarDefinition'
+          description: Tag identifying Pillar
+        strategicObjective:
+          $ref: '#/components/schemas/StrategicObjectiveDefinition'
+          description: Tag identifying Strategic Objective
+        name:
+          type: string
+          description: BP Name
+        description:
+          type: string
+          description: Model Name
+
+
+    StrategicObjectiveScoreDTO:
+      type: object
+      required:
+        - strategicObjective
+        - score
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Object id
+        profileId:
+          type: integer
+          format: int64
+          description: Client Profile Id
+        pillar:
+          $ref: '#/components/schemas/PillarDefinition'
+          description: Tag identifying Pillar
+        strategicObjective:
+          $ref: '#/components/schemas/StrategicObjectiveDefinition'
+          description: Tag identifying Strategic Objective
+        score:
+          type: number
+          description: Calculated Score
+        comments:
+          type: string
+          description: tag identifier
+        scoreDate:
+          type: string
+          format: date-time
+          description: When was score taken ISO 8601
+          example: '2021-01-30T08:30:00Z'
+
+    ProfileSummaryDTO:
+      type: object
+      required:
+        - id
+        - pillar
+        - score
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Object id
+        pillar:
+          $ref: '#/components/schemas/PillarDefinition'
+          description: Pillar
+        score:
+          type: number
+          description: Calculated Score
+
+    ProfileDTO:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Object id
+        clientId:
+          type: integer
+          format: int64
+          description: Object id
+        name:
+          type: string
+          description: Client Profile
+        strategicObjectiveScores:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrategicObjectiveScoreDTO'
+
+    ClientDTO:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Object id
+        name:
+          type: string
+          description: Client Name
+
+    PillarDefinition:
+      type: string
+      enum:
+        - Security
+        - Performance Efficiency
+        - Reliability
+        - Cost Optimization
+        - Operational Excellence
+    StrategicObjectiveDefinition:
+      type: string
+      enum:
+        - Automatically Recover From Failure
+        - Test Recovery Procedures
+        - Scale Horizontally
+        - Stop Guessing Capacity
+        - Manage Change In Automation
+        - Implement A Strong Identity Foundation
+        - Enable Traceability
+        - Apply Security At All Layers
+        - Automate Security Best Practices
+        - Protect Data In Transit And At Rest
+        - Keep People Away From Data
+        - Prepare For Security Events
+        - Perform Operations As Code
+        - Make Frequent Small Reversible Changes
+        - Refine Operations Procedures Frequently
+        - Anticipate Failure
+        - Learn From All Operational Failures
+        - Democratize Advanced Technologies
+        - Go Global In Minutes
+        - Use Serverless Architectures
+        - Experiment More Often
+        - Consider Mechanical Sympathy
+        - Implement Cloud Financial Management
+        - Adopt A Consumption Model
+        - Measure Overall Efficiency
+        - Stop Spending Money On Undifferentiated Heavy Lifting
+        - Analyze And Attribute Expenditure

@@ -1,0 +1,12 @@
+STRATEGIC_OBJECTIVE,SCORE,COMMENTS
+Democratize Advanced Technologies,0.3,Choose the best-performing compute solution
+Prepare For Security Events,0.7,Understand the business requirements
+Anticipate Failure,0.13,Validate the data quality of source systems
+Keep People Away From Data,0.11,Classify and protect data
+Adopt A Consumption Model,0.9,Choose cost-effective compute and storage solutions based on workload usage patterns
+Prepare For Security Events,0.2,Understand the business requirements
+Anticipate Failure,0.17,Validate the data quality of source systems
+Experiment More Often,0.3,Choose the best-performing compute solution
+Measure Overall Efficiency,0.5,Choose cost-effective compute and storage solutions based on workload usage patterns
+Protect Data In Transit And At Rest,0.2,Classify and protect data
+Prepare For Security Events,0.9,Understand the business requirements

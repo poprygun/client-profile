@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity StrategicObjectiveScore.
+    -->
+    <changeSet id="20220920210038-1" author="ashumilov">
+        <createTable tableName="strategic_objective_score">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="pillar" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="score" type="${floatType}">
+                <constraints nullable="false" />
+            </column>
+            <column name="score_date" type="${datetimeType}">
+                <constraints nullable="false" />
+            </column>
+            <column name="strategic_objective" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="comments" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="profile_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+        <dropDefaultValue tableName="strategic_objective_score" columnName="score_date" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+<!--    <changeSet id="20220920210038-1-data" author="ashumilov" context="faker">-->
+<!--        <loadData-->
+<!--                  file="config/liquibase/fake-data/strategic_objective_score.csv"-->
+<!--                  separator=";"-->
+<!--                  tableName="strategic_objective_score"-->
+<!--                  usePreparedStatements="true">-->
+<!--            <column name="id" type="numeric"/>-->
+<!--            <column name="score" type="numeric"/>-->
+<!--            <column name="score_date" type="date"/>-->
+<!--        </loadData>-->
+<!--    </changeSet>-->
+</databaseChangeLog>

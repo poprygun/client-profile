@@ -1,0 +1,94 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.3'
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id 'java'
+	id 'org.openapi.generator' version '5.3.0'
+}
+
+compileJava.dependsOn('openApiGenerate')
+
+group = 'com.vmware.rpm.tools.clientprofile'
+version = '0.0.1-SNAPSHOT'
+//sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/libs-release" }
+}
+
+ext {
+	mapstructVersion = "1.5.2.Final"
+	lombokMapstructBindingVersion = "0.2.0"
+}
+
+dependencies {
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation "org.liquibase:liquibase-core:${liquibaseVersion}"
+	implementation "org.springdoc:springdoc-openapi-ui:${springdocOpenapiUiVersion}"
+	implementation "org.openapitools:jackson-databind-nullable:${jacksonDatabindNullableVersion}"
+	implementation "io.swagger:swagger-annotations:1.6.2"
+	implementation 'org.hibernate:hibernate-validator:7.0.1.Final'
+	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.jeasy:easy-random-core:5.0.0'
+//	implementation 'org.springframework.cloud:spring-cloud-bindings:1.10.0'
+	implementation ('org.jeasy:easy-random-randomizers:5.0.0'){
+		exclude group: 'org.yaml', module: 'snakeyaml'
+	}
+	implementation 'com.opencsv:opencsv:5.7.0'
+	runtimeOnly 'com.h2database:h2'
+//	runtimeOnly 'org.postgresql:postgresql:42.5.0'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+
+	implementation 'io.pivotal.cfenv:java-cfenv-boot:3.0.0'
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir "$buildDir/generated/src/main/java"
+		}
+	}
+}
+
+openApiGenerate {
+	generatorName = "spring"
+	inputSpec = "$rootDir/specs/api.yml".toString()
+	outputDir = "$buildDir/generated".toString()
+	apiPackage = "com.vmware.rpm.tools.clientprofile.api"
+	invokerPackage = "com.vmware.rpm.tools.clientprofile.invoker"
+	modelPackage = "com.vmware.rpm.tools.clientprofile.model"
+	generateApiDocumentation = false
+	generateApiTests = true
+	typeMappings = [number: "Double"]
+	ignoreFileOverride = "$rootDir/.openapi-generator-ignore"
+	configOptions = [
+			dateLibrary: "java8",
+			ignoreSwagger: "true",
+			interfaceOnly: "true"
+	]
+}
+
+compileJava {
+	source += sourceSets.main.java
+}
+
+jar {
+	enabled = false
+}

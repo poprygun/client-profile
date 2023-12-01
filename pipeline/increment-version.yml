@@ -1,0 +1,31 @@
+increment version:
+  stage: increment_version
+  before_script:
+    - apt-get update -y && apt-get install -y git
+  script:
+    - |
+      latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
+      major=$(echo $latest_tag | cut -d. -f1)
+      minor=$(echo $latest_tag | cut -d. -f2)
+      patch=$(echo $latest_tag | cut -d. -f3)
+      
+      if echo $CI_COMMIT_MESSAGE | grep -q "\[major\]"; then
+        major=$((major + 1))
+        minor=0
+        patch=0
+      elif echo $CI_COMMIT_MESSAGE | grep -q "\[minor\]"; then
+        minor=$((minor + 1))
+        patch=0
+      else
+        patch=$((patch + 1))
+      fi
+      
+      new_version="$major.$minor.$patch"
+      git config user.email "ci-versioner@vmware.com"
+      git tag -a $new_version -m "Release $new_version"
+      git push -o ci.skip "https://ci-versioner:$CI_VERSIONER_TOKEN@gitlab.eng.vmware.com/vmware-navigator-practice/tooling/$APP.git" $new_version
+      echo $new_version > ./version.txt
+  cache:
+    key: version
+    paths:
+      - ./version.txt

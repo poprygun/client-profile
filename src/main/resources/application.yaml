@@ -1,0 +1,38 @@
+server:
+  error:
+    include-message: always
+spring:
+  datasource:
+    username: sa
+    password:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: false
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+#    database-platform: org.hibernate.dialect.H2Dialect
+
+  liquibase:
+    change-log: classpath:config/liquibase/master.xml
+    enabled: true
+
+  jackson:
+    serialization:
+      write_dates_as_timestamps: true
+
+springdoc:
+  packagesToScan: com.vmware.rpm.tools.clientprofile
+  paths-to-match: /**
+  swagger-ui:
+    csrf:
+      enabled: true
+    enabled: true
+    path: /
+
+org.springframework.cloud.bindings.boot.enable: false
+management.endpoints.web.exposure.include: '*'
+management.endpoint.health.show-details: always

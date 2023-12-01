@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: client-profile
+  description: Tanzu Java Web App
+  tags:
+    - java
+    - spring
+    - web
+    - tanzu
+    - rpm-tools
+  annotations:
+    gitlab.eng.vmware.com/project-slug: vmware-navigator-practice/tooling/client-profile
+    backstage.io/kubernetes-label-selector: app.kubernetes.io/part-of=client-profile
+spec:
+  type: service
+  lifecycle: experimental
+  owner: rpm-team
+  
